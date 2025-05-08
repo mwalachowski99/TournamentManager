@@ -1,0 +1,6 @@
+@ToournamentManager.Presentation_HostAddress = http://localhost:5206
+
+GET {{ToournamentManager.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

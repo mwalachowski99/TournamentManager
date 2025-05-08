@@ -1,0 +1,11 @@
+export const REFRESH_TOKEN = 'REFRESH_TOKEN'
+export const LOGOUT = 'LOGOUT'
+export const SIGN_IN = 'SIGN_IN'
+export const SIGN_UP = 'SIGN_UP'
+export const AUTH_ERROR = 'AUTH_ERROR'
+
+export const GET_TOURNAMENTS = 'GET_TOURNAMENTS'
+export const GET_TOURNAMENT_BY_ID = 'GET_TOURNAMENT_BY_ID'
+export const ADD_TOURNAMENT = 'ADD_TOURNAMENT'
+export const DELETE_TOURNAMENT = 'DELETE_TOURNAMENT'
+export const EDIT_TOURNAMENT = 'EDIT_TOURNAMENT'
