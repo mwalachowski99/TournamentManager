@@ -6,7 +6,9 @@ namespace TournamentManager.Domain.Entities
     {
         public Team? HomeTeam { get; set; }
         public Team? AwayTeam { get; set; }
-        public DateTime StartDate { get; set; }
-        public Round Round { get; set; }
+        public DateTime? StartDate { get; set; }
+        public Round? Round { get; set; }
+
+        public Match? NextMatch { get; set; }
     }
 }

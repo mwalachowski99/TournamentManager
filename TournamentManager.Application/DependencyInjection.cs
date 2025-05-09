@@ -5,6 +5,7 @@ using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TournamentManager.Application.Behaviors;
+using TournamentManager.Application.Generators.MatchGenerators;
 using TournamentManager.Application.Mapping;
 
 namespace TournamentManager.Application
@@ -26,6 +27,10 @@ namespace TournamentManager.Application
             services.AddSingleton(config);
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+            services.AddTransient<EliminationBracketMatchGenerator>();
+            services.AddTransient<LeagueKnockoutMatchGenerator>();
+            services.AddSingleton<MatchGeneratorFactory>();
 
             return services;
         }

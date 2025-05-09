@@ -2,11 +2,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using TournamentManager.Contracts.Dtos;
 using TournamentManager.Contracts.Exceptions;
 using TournamentManager.Domain.Entities;
 using TournamentManager.Domain.Dictionaries;
 using TournamentManager.Infrastructure;
+using TournamentManager.Contracts.Errors;
 
 namespace TournamentManager.Application.Commands.Tournaments.ConfigureTournament
 {
@@ -14,10 +14,13 @@ namespace TournamentManager.Application.Commands.Tournaments.ConfigureTournament
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public ConfigureTournamentCommandHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly MatchGeneratorFactory _matchGeneratorFactory;
+
+        public ConfigureTournamentCommandHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor, MatchGeneratorFactory matchGeneratorFactory)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _matchGeneratorFactory = matchGeneratorFactory;
         }
 
         public async Task<Unit> Handle(ConfigureTournamentCommand request, CancellationToken cancellationToken)
@@ -28,13 +31,25 @@ namespace TournamentManager.Application.Commands.Tournaments.ConfigureTournament
                 throw new UnauthorizedAccessException("User is not logged in.");
             }
 
-            var tournament = await _context.Tournaments
-                .FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == userId, cancellationToken);
 
-            if (tournament == null)
+            var tournament = await _context.Tournaments.FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == userId, cancellationToken)
+               ?? throw new NotFoundException($"{nameof(Tournament)} with {nameof(Tournament.Id)}: {request.Id} was not found in database");
+
+            if (tournament.IsConfigured)
             {
-                throw new NotFoundException($"{nameof(Tournament)} with {nameof(Tournament.Id)}: {request.Id} was not found in database");
+                throw new CustomValidationException(new List<ValidationError>
+                    {
+                        new ValidationError
+                        {
+                            Property = "TournamentId",
+                            ErrorMessage = "This tournament has already been configured."
+                        }
+                    });
             }
+
+
+
+            var teams = new List<Team>();
 
             for (int i = 0; i < request.TeamNumber; i++)
             {
@@ -44,6 +59,7 @@ namespace TournamentManager.Application.Commands.Tournaments.ConfigureTournament
                     Name = $"Team {teamLetter}",
                     Tournament = tournament
                 };
+                teams.Add(team);
                 await _context.Teams.AddAsync(team, cancellationToken);
 
                 for(int j = 0; j < GameTeamSizes.GetTeamSize(tournament.Game); j++)
@@ -58,7 +74,20 @@ namespace TournamentManager.Application.Commands.Tournaments.ConfigureTournament
             }
 
 
-          
+            var matchGenerator = _matchGeneratorFactory.GetGenerator(request.TournamentMode);
+            var matches = await matchGenerator.GenerateMatchesAsync(tournament, teams, cancellationToken);
+
+            
+
+            tournament.TournamentMode = request.TournamentMode;
+            tournament.IsConfigured = true;
+
+            _context.Tournaments.Update(tournament);
+
+
+            await _context.Matches.AddRangeAsync(matches, cancellationToken);
+
+
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

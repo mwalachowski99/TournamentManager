@@ -2,9 +2,10 @@
 {
     public enum Round
     {
-        finals,
+        final,
         semifinals,
         quarterfinals,
+        roundOf16,
         league
     }
 }
