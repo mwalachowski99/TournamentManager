@@ -52,6 +52,7 @@ export default function TournamentDashboard() {
             <ConfigureTournamentModal
                 isOpen={isConfigureModalOpen}
                 handleClose={() => setIsConfigureModalOpen(false)}
+                tournamentId={id ?? ''}
             />
         </>
     )

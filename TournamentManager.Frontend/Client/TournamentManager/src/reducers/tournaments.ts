@@ -1,6 +1,7 @@
 import { Action } from '../actions/action'
 import {
     ADD_TOURNAMENT,
+    CONFIGURE_TOURNAMENT,
     DELETE_TOURNAMENT,
     EDIT_TOURNAMENT,
     GET_TOURNAMENT_BY_ID,
@@ -55,6 +56,11 @@ export default function (state: InitialState = initialState, action: Action) {
                     ),
                     action.payload.tournamentDto,
                 ],
+            }
+        case CONFIGURE_TOURNAMENT:
+            return {
+                ...state,
+                tournament: action.payload.tournamentDto,
             }
         default:
             return state

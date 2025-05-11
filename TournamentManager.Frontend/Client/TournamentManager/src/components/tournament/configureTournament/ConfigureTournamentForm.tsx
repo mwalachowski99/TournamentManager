@@ -5,22 +5,18 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    TextField,
 } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { Game } from '../../../enums/game'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../store/rootState'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import dayjs, { Dayjs } from 'dayjs'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useAppDispatch } from '../../../store/useAppDispatch'
-import { addTournament } from '../../../actions/tournaments'
 import { TournamentMode } from '../../../enums/tournamentMode'
-import tournaments from '../../../reducers/tournaments'
-import EliminationBracket from '../../../brackets/EliminationBracket'
+import EliminationBracket from '../../brackets/TournamentBracket'
+import { generateMatchesForMode } from '../../../utils/matchGenerator'
+import { useEffect, useMemo } from 'react'
+import { getTeamNumberOptions } from '../../../helpers/TournamentHelpers'
+import { configureTournament } from '../../../actions/tournaments'
 
 interface FormValues {
     tournamentMode: TournamentMode
@@ -29,10 +25,12 @@ interface FormValues {
 
 interface AddTournamentFormProps {
     handleClose: () => void
+    tournamentId: string
 }
 
 export default function ConfigureTournamentForm({
     handleClose,
+    tournamentId,
 }: AddTournamentFormProps) {
     const { errorMessage } = useSelector((state: RootState) => state.auth)
     const dispatch = useAppDispatch()
@@ -40,13 +38,15 @@ export default function ConfigureTournamentForm({
     const validationSchema = Yup.object().shape({})
 
     const onSubmit = (values: FormValues) => {
-        const data = {
-            id: undefined,
-            tournamentMode: values.tournamentMode,
-            teamNumber: values.teamNumber,
-        }
-        console.log('values', values)
-        console.log('data', data)
+        dispatch(
+            configureTournament(
+                tournamentId,
+                values.tournamentMode,
+                values.teamNumber
+            )
+        ).then(() => {
+            handleClose()
+        })
     }
 
     const formik = useFormik({
@@ -57,6 +57,27 @@ export default function ConfigureTournamentForm({
         validationSchema: validationSchema,
         onSubmit: onSubmit,
     })
+
+    const generateMatches = useMemo(
+        () =>
+            generateMatchesForMode(
+                formik.values.tournamentMode,
+                formik.values.teamNumber
+            ),
+        [formik.values.tournamentMode, formik.values.teamNumber]
+    )
+
+    const teamOptions = useMemo(
+        () => getTeamNumberOptions(formik.values.tournamentMode),
+        [formik.values.tournamentMode]
+    )
+
+    useEffect(() => {
+        const defaultValue = 4
+        if (formik.values.teamNumber !== defaultValue) {
+            formik.setFieldValue('teamNumber', defaultValue)
+        }
+    }, [formik.values.tournamentMode])
 
     return (
         <Box
@@ -101,11 +122,18 @@ export default function ConfigureTournamentForm({
                         formik.setFieldValue('teamNumber', newValue)
                     }}
                 >
-                    <MenuItem value={4}>4</MenuItem>
-                    <MenuItem value={8}>8</MenuItem>
+                    {teamOptions.map((val) => (
+                        <MenuItem key={val} value={val}>
+                            {val}
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
-            <EliminationBracket />
+            <EliminationBracket
+                matches={generateMatches}
+                previewMode={true}
+                tournamentMode={formik.values.tournamentMode}
+            />
 
             <Button type="submit" fullWidth variant="contained">
                 Zapisz

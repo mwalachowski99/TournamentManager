@@ -7,10 +7,12 @@ using TournamentManager.Domain.Entities;
 using TournamentManager.Domain.Dictionaries;
 using TournamentManager.Infrastructure;
 using TournamentManager.Contracts.Errors;
+using TournamentManager.Contracts.Responses.Tournaments;
+using TournamentManager.Contracts.Dtos;
 
 namespace TournamentManager.Application.Commands.Tournaments.ConfigureTournament
 {
-    public class ConfigureTournamentCommandHandler : IRequestHandler<ConfigureTournamentCommand, Unit>
+    public class ConfigureTournamentCommandHandler : IRequestHandler<ConfigureTournamentCommand, ConfigureTournamentResponse>
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -23,7 +25,7 @@ namespace TournamentManager.Application.Commands.Tournaments.ConfigureTournament
             _matchGeneratorFactory = matchGeneratorFactory;
         }
 
-        public async Task<Unit> Handle(ConfigureTournamentCommand request, CancellationToken cancellationToken)
+        public async Task<ConfigureTournamentResponse> Handle(ConfigureTournamentCommand request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
@@ -90,7 +92,9 @@ namespace TournamentManager.Application.Commands.Tournaments.ConfigureTournament
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            var tournamentDto = new DetailedTournamentDto(tournament.Id, tournament.Name, tournament.Description, tournament.StartDate, tournament.EndDate, tournament.Game, tournament.TournamentMode, tournament.IsConfigured);
+
+            return new ConfigureTournamentResponse(tournamentDto);
         }
     }
 }

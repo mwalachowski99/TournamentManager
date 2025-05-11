@@ -6,12 +6,14 @@ import {
     DELETE_TOURNAMENT,
     EDIT_TOURNAMENT,
     GET_TOURNAMENT_BY_ID,
+    CONFIGURE_TOURNAMENT,
 } from './types'
 import { Action } from './action'
 import { RootState } from '../store/rootState'
 import { ThunkDispatch } from '@reduxjs/toolkit'
 import { TournamentDto } from '../models/tournamentDto'
 import { apiRequest, tokenConfig } from './actionHelpers'
+import { TournamentMode } from '../enums/tournamentMode'
 
 export const getTournaments =
     () => async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
@@ -90,7 +92,6 @@ export const deleteTournament =
 export const editTournament =
     (tournament: TournamentDto) =>
     async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
-        console.log(tournament)
         await apiRequest(
             () =>
                 axios
@@ -102,6 +103,31 @@ export const editTournament =
                     .then((res) => {
                         dispatch({
                             type: EDIT_TOURNAMENT,
+                            payload: res.data,
+                        })
+                    }),
+            dispatch
+        )
+    }
+
+export const configureTournament =
+    (
+        tournamentId: number,
+        tournamentMode: TournamentMode,
+        teamNumber: number
+    ) =>
+    async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+        await apiRequest(
+            () =>
+                axios
+                    .put(
+                        `${API_BASE_URL}/tournaments/configure/${tournamentId}`,
+                        { tournamentMode, teamNumber },
+                        tokenConfig()
+                    )
+                    .then((res) => {
+                        dispatch({
+                            type: CONFIGURE_TOURNAMENT,
                             payload: res.data,
                         })
                     }),
