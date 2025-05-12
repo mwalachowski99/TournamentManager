@@ -5,6 +5,7 @@ import {
     InputLabel,
     MenuItem,
     Select,
+    Typography,
 } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -32,7 +33,9 @@ export default function ConfigureTournamentForm({
     handleClose,
     tournamentId,
 }: AddTournamentFormProps) {
-    const { errorMessage } = useSelector((state: RootState) => state.auth)
+    const { configureTournamentErrorMessage } = useSelector(
+        (state: RootState) => state.tournaments
+    )
     const dispatch = useAppDispatch()
 
     const validationSchema = Yup.object().shape({})
@@ -90,7 +93,18 @@ export default function ConfigureTournamentForm({
                 gap: 2,
             }}
         >
-            <FormControl>
+            {configureTournamentErrorMessage && (
+                <Typography color="error" sx={{ textAlign: 'center' }}>
+                    {configureTournamentErrorMessage}
+                </Typography>
+            )}
+            <FormControl
+                error={Boolean(
+                    (formik.touched.tournamentMode &&
+                        formik.errors.tournamentMode) ||
+                        configureTournamentErrorMessage
+                )}
+            >
                 <InputLabel>Tournament Mode</InputLabel>
                 <Select
                     id="tournamentMode"
@@ -110,7 +124,12 @@ export default function ConfigureTournamentForm({
                     </MenuItem>
                 </Select>
             </FormControl>
-            <FormControl>
+            <FormControl
+                error={Boolean(
+                    (formik.touched.teamNumber && formik.errors.teamNumber) ||
+                        configureTournamentErrorMessage
+                )}
+            >
                 <InputLabel>Team Number</InputLabel>
                 <Select
                     id="teamNumber"

@@ -6,6 +6,7 @@ import {
     MenuItem,
     Select,
     TextField,
+    Typography,
 } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -36,7 +37,9 @@ export default function AddTournamentForm({
     setImage,
     handleClose,
 }: AddTournamentFormProps) {
-    const { errorMessage } = useSelector((state: RootState) => state.auth)
+    const { addTournamentErrorMessage } = useSelector(
+        (state: RootState) => state.tournaments
+    )
     const dispatch = useAppDispatch()
 
     const validationSchema = Yup.object().shape({
@@ -94,6 +97,11 @@ export default function AddTournamentForm({
                 gap: 2,
             }}
         >
+            {addTournamentErrorMessage && (
+                <Typography color="error" sx={{ textAlign: 'center' }}>
+                    {addTournamentErrorMessage}
+                </Typography>
+            )}
             <TextField
                 fullWidth
                 id="name"
@@ -103,7 +111,8 @@ export default function AddTournamentForm({
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={Boolean(
-                    (formik.touched.name && formik.errors.name) || errorMessage
+                    (formik.touched.name && formik.errors.name) ||
+                        addTournamentErrorMessage
                 )}
                 helperText={formik.touched.name && formik.errors.name}
             />
@@ -118,7 +127,7 @@ export default function AddTournamentForm({
                 onBlur={formik.handleBlur}
                 error={Boolean(
                     (formik.touched.description && formik.errors.description) ||
-                        errorMessage
+                        addTournamentErrorMessage
                 )}
                 helperText={
                     formik.touched.description && formik.errors.description
@@ -140,8 +149,9 @@ export default function AddTournamentForm({
                         textField: {
                             onBlur: formik.handleBlur,
                             error: Boolean(
-                                formik.touched.startDate &&
-                                    formik.errors.startDate
+                                (formik.touched.startDate &&
+                                    formik.errors.startDate) ||
+                                    addTournamentErrorMessage
                             ),
                             helperText:
                                 formik.touched.startDate &&
@@ -165,7 +175,9 @@ export default function AddTournamentForm({
                         textField: {
                             onBlur: formik.handleBlur,
                             error: Boolean(
-                                formik.touched.endDate && formik.errors.endDate
+                                (formik.touched.endDate &&
+                                    formik.errors.endDate) ||
+                                    addTournamentErrorMessage
                             ),
                             helperText:
                                 formik.touched.endDate &&
@@ -176,7 +188,12 @@ export default function AddTournamentForm({
                     }}
                 />
             </LocalizationProvider>
-            <FormControl>
+            <FormControl
+                error={Boolean(
+                    (formik.touched.game && formik.errors.game) ||
+                        addTournamentErrorMessage
+                )}
+            >
                 <InputLabel>Game</InputLabel>
                 <Select
                     id="game"

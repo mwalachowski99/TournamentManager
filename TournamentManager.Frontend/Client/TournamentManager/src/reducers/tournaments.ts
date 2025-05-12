@@ -1,7 +1,9 @@
 import { Action } from '../actions/action'
 import {
     ADD_TOURNAMENT,
+    ADD_TOURNAMENT_ERROR,
     CONFIGURE_TOURNAMENT,
+    CONFIGURE_TOURNAMENT_ERROR,
     DELETE_TOURNAMENT,
     EDIT_TOURNAMENT,
     GET_TOURNAMENT_BY_ID,
@@ -12,6 +14,8 @@ import { TournamentDto } from '../models/tournamentDto'
 interface InitialState {
     tournaments: TournamentDto[]
     tournament: TournamentDto | null
+    configureTournamentErrorMessage?: string
+    addTournamentErrorMessage?: string
 }
 
 const initialState: InitialState = {
@@ -39,6 +43,11 @@ export default function (state: InitialState = initialState, action: Action) {
                     action.payload.tournamentDto,
                 ],
             }
+        case ADD_TOURNAMENT_ERROR:
+            return {
+                ...state,
+                addTournamentErrorMessage: action.payload,
+            }
         case DELETE_TOURNAMENT:
             return {
                 ...state,
@@ -61,6 +70,11 @@ export default function (state: InitialState = initialState, action: Action) {
             return {
                 ...state,
                 tournament: action.payload.tournamentDto,
+            }
+        case CONFIGURE_TOURNAMENT_ERROR:
+            return {
+                ...state,
+                configureTournamentErrorMessage: action.payload,
             }
         default:
             return state

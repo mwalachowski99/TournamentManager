@@ -1,4 +1,3 @@
-import { ErrorMessage } from 'formik'
 import { Action } from '../actions/action'
 import {
     AUTH_ERROR,
@@ -22,7 +21,6 @@ const initialState: InitialState = {
 export default function (state: InitialState = initialState, action: Action) {
     switch (action.type) {
         case REFRESH_TOKEN:
-            console.log('REFRESHING')
             return {
                 ...state,
                 isAuthenticated: true,
