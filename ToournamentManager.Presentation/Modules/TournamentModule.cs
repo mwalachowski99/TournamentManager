@@ -4,6 +4,7 @@ using TournamentManager.Application.Commands.Tournaments.CreateTournament;
 using TournamentManager.Application.Commands.Tournaments.DeleteTournament;
 using TournamentManager.Application.Commands.Tournaments.UpdateTournament;
 using TournamentManager.Application.Queries.GetTournamentById;
+using TournamentManager.Application.Queries.GetTournamentResults;
 using TournamentManager.Application.Queries.GetTournaments;
 using TournamentManager.Contracts.Requests.Tournaments;
 
@@ -52,6 +53,20 @@ namespace TournamentManager.Presentation.Modules
                 var command = new ConfigureTournamentCommand(id, configureTournamentRequest.TournamentMode, configureTournamentRequest.TeamNumber);
                 var result = await mediator.Send(command, ct);
                 return Results.Ok(result);
+            }).WithTags("Tournaments").RequireAuthorization();
+
+            app.MapGet("/api/tournaments/results/{id}", async (IMediator mediator, int id, CancellationToken ct) =>
+            {
+                var tournamentResults = await mediator.Send(new GetTournamentResultsQuery(id));
+                return Results.Ok(tournamentResults);
+
+            }).WithTags("Tournaments").RequireAuthorization();
+
+            app.MapGet("/api/tournaments/leagueTable/{id}", async (IMediator mediator, int id, CancellationToken ct) =>
+            {
+                var tournamentLeagueTable = await mediator.Send(new GetTournamentLeagueTableQuery(id));
+                return Results.Ok(tournamentLeagueTable);
+
             }).WithTags("Tournaments").RequireAuthorization();
         }
     }

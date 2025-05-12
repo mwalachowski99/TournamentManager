@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TournamentManager.Infrastructure;
@@ -11,9 +12,11 @@ using TournamentManager.Infrastructure;
 namespace TournamentManager.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250512133720_Added Tournament field to Match")]
+    partial class AddedTournamentfieldtoMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,13 +238,13 @@ namespace TournamentManager.Infrastructure.Migrations
                     b.Property<int?>("NextMatchId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Round")
+                    b.Property<int?>("Round")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("TournamentId")
+                    b.Property<int?>("TournamentId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -287,7 +290,6 @@ namespace TournamentManager.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("TournamentId")
@@ -405,9 +407,7 @@ namespace TournamentManager.Infrastructure.Migrations
 
                     b.HasOne("TournamentManager.Domain.Entities.Tournament", "Tournament")
                         .WithMany()
-                        .HasForeignKey("TournamentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TournamentId");
 
                     b.Navigation("AwayTeam");
 

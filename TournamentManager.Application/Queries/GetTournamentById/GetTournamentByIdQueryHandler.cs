@@ -4,7 +4,6 @@ using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 using System.Security.Claims;
 using TournamentManager.Contracts.Exceptions;
 using TournamentManager.Contracts.Responses.Tournaments;

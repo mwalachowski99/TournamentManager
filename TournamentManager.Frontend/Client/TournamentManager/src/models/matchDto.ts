@@ -9,6 +9,5 @@ export interface MatchDto {
     homeTeamScore: number | undefined
     awayTeamScore: number | undefined
     startDate: string
-    nextMatchId: number | undefined
     round: Round
 }

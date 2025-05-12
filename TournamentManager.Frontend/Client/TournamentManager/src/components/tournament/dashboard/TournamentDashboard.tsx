@@ -47,7 +47,7 @@ export default function TournamentDashboard() {
                     </Stack>
                 )}
 
-                <Link to={`/tournament/${id}/bracket`}> test</Link>
+                <Link to={`/tournament/${id}/results`}> results</Link>
             </ContentBox>
             <ConfigureTournamentModal
                 isOpen={isConfigureModalOpen}

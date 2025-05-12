@@ -30,6 +30,7 @@ namespace TournamentManager.Application.Generators.MatchGenerators
                     {
                         match = new Match
                         {
+                            Tournament = tournament,
                             Round = round,
                             HomeTeam = teams[j * 2],
                             AwayTeam = teams[j * 2 + 1]
@@ -39,6 +40,7 @@ namespace TournamentManager.Application.Generators.MatchGenerators
                     {
                         match = new Match
                         {
+                            Tournament = tournament,
                             Round = round
                         };
                     }

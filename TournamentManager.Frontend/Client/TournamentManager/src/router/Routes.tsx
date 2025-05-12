@@ -6,7 +6,7 @@ import PrivateRoute from './PrivateRoute'
 import TournamentList from '../components/tournaments/TournamentList'
 import NavigationLayout from '../components/layout/navigation/NavigationLayout'
 import TournamentDashboard from '../components/tournament/dashboard/TournamentDashboard'
-import TournamentBracket from '../components/tournament/bracket/TournamentBracket'
+import TournamentResults from '../components/tournament/results/TournamentResults'
 
 export const routes: RouteObject[] = [
     {
@@ -29,8 +29,8 @@ export const routes: RouteObject[] = [
                         element: <TournamentDashboard />,
                     },
                     {
-                        path: 'tournament/:id/bracket',
-                        element: <TournamentBracket />,
+                        path: 'tournament/:id/results',
+                        element: <TournamentResults />,
                     },
                     // dodaj kolejne ścieżki zalogowanych tu
                 ],

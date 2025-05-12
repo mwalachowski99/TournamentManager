@@ -2,7 +2,7 @@ import { Box, Paper, Stack, Typography } from '@mui/material'
 
 import ContentBox from '../../containers/ContentBox'
 
-export default function TournamentBracket() {
+export default function TournamentResults() {
     return (
         <>
             <ContentBox>

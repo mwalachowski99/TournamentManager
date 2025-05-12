@@ -52,7 +52,6 @@ function generateEliminationBracketMatches(teamNumber: number): MatchDto[] {
                     homeTeamScore: 1,
                     awayTeamScore: 0,
                     startDate: '2025-05-11T14:30:00Z',
-                    nextMatchId: 0,
                 }
             } else {
                 match = {
@@ -65,7 +64,6 @@ function generateEliminationBracketMatches(teamNumber: number): MatchDto[] {
                     homeTeamScore: undefined,
                     awayTeamScore: undefined,
                     startDate: '2025-05-11T14:30:00Z',
-                    nextMatchId: 0,
                 }
             }
 
@@ -88,7 +86,6 @@ function generateLeagueKnockoutMatches(): MatchDto[] {
             homeTeamScore: undefined,
             awayTeamScore: undefined,
             startDate: '2025-05-11T14:30:00Z',
-            nextMatchId: 0,
         },
         {
             id: 2,
@@ -100,7 +97,6 @@ function generateLeagueKnockoutMatches(): MatchDto[] {
             homeTeamScore: undefined,
             awayTeamScore: undefined,
             startDate: '2025-05-11T14:30:00Z',
-            nextMatchId: 0,
         },
         {
             id: 3,
@@ -112,7 +108,6 @@ function generateLeagueKnockoutMatches(): MatchDto[] {
             homeTeamScore: undefined,
             awayTeamScore: undefined,
             startDate: '2025-05-11T14:30:00Z',
-            nextMatchId: 0,
         },
     ]
 
