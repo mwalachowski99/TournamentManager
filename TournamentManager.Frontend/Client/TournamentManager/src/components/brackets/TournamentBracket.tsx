@@ -33,7 +33,7 @@ export default memo(function TournamentBracket({
     }
 
     const isSmallScreen = useMediaQuery(
-        `(max-width:${!previewMode ? 800 : 1200}px)`
+        `(max-width:${!previewMode ? 1050 : 1200}px)`
     )
 
     const rounds = useMemo(() => convertMatchesToRounds(matches), [matches])
@@ -85,7 +85,7 @@ export default memo(function TournamentBracket({
                             />
                         )
                     }
-                    mobileBreakpoint={!previewMode ? 800 : 1200}
+                    mobileBreakpoint={!previewMode ? 1050 : 1200}
                     swipeableProps={{
                         enableMouseEvents: true,
                         animateHeight: true,

@@ -10,7 +10,6 @@ import {
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { useLocation, Outlet } from 'react-router-dom'
 import { Stack, Typography } from '@mui/material'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { useAppDispatch } from '../../../store/useAppDispatch'
 import { logout } from '../../../actions/auth'
 
@@ -27,7 +26,7 @@ const NAVIGATION: Navigation = [
     },
 ]
 
-const demoTheme = createTheme({
+const theme = createTheme({
     cssVariables: {
         colorSchemeSelector: 'data-toolpad-color-scheme',
     },
@@ -35,8 +34,8 @@ const demoTheme = createTheme({
     breakpoints: {
         values: {
             xs: 0,
-            sm: 600,
-            md: 600,
+            sm: 800,
+            md: 1000,
             lg: 1200,
             xl: 1536,
         },
@@ -90,7 +89,7 @@ export default function DashboardLayoutAccount() {
             session={session}
             authentication={authentication}
             navigation={NAVIGATION}
-            theme={demoTheme}
+            theme={theme}
         >
             <DashboardLayout
                 slots={{

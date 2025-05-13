@@ -44,6 +44,8 @@ namespace TournamentManager.Application.Queries.GetTournamentById
                     StartDate: m.StartDate,
                     Round: m.Round
                 ))
+                .OrderByDescending(m => m.Round)          
+                .ThenBy(m => m.Id)
                 .ToArray();
 
             var tournamentResults = new TournamentResultsDto(

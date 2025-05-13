@@ -10,3 +10,14 @@ export const getTeamNumberOptions = (mode: TournamentMode): number[] => {
             return []
     }
 }
+
+export const getTournamentPhases = (mode: TournamentMode): string[] => {
+    switch (mode) {
+        case TournamentMode.eliminationBracket:
+            return ['Knockout']
+        case TournamentMode.leagueKnockout:
+            return ['League', 'Knockout']
+        default:
+            return []
+    }
+}

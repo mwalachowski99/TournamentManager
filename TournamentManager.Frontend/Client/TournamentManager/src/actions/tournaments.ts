@@ -9,6 +9,8 @@ import {
     CONFIGURE_TOURNAMENT,
     CONFIGURE_TOURNAMENT_ERROR,
     ADD_TOURNAMENT_ERROR,
+    GET_TOURNAMENT_RESULTS,
+    GET_TOURNAMENT_LEAGUE_TABLE,
 } from './types'
 import { Action } from './action'
 import { RootState } from '../store/rootState'
@@ -153,6 +155,39 @@ export const configureTournament =
                     })
 
                     throw err
+                })
+        )
+    }
+
+export const getTournamentResults =
+    (id: string) =>
+    async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+        await apiRequest(() =>
+            axios
+                .get(`${API_BASE_URL}/tournaments/results/${id}`, tokenConfig())
+                .then((res) => {
+                    dispatch({
+                        type: GET_TOURNAMENT_RESULTS,
+                        payload: res.data,
+                    })
+                })
+        )
+    }
+
+export const getTournamentLeagueTable =
+    (id: string) =>
+    async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+        await apiRequest(() =>
+            axios
+                .get(
+                    `${API_BASE_URL}/tournaments/leagueTable/${id}`,
+                    tokenConfig()
+                )
+                .then((res) => {
+                    dispatch({
+                        type: GET_TOURNAMENT_LEAGUE_TABLE,
+                        payload: res.data,
+                    })
                 })
         )
     }

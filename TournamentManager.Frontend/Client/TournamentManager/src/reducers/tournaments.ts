@@ -7,15 +7,21 @@ import {
     DELETE_TOURNAMENT,
     EDIT_TOURNAMENT,
     GET_TOURNAMENT_BY_ID,
+    GET_TOURNAMENT_LEAGUE_TABLE,
+    GET_TOURNAMENT_RESULTS,
     GET_TOURNAMENTS,
 } from '../actions/types'
 import { TournamentDto } from '../models/tournamentDto'
+import { TournamentLeagueTableDto } from '../models/tournamentLeagueTableDto'
+import { TournamentResultsDto } from '../models/tournamentResultsDto'
 
 interface InitialState {
     tournaments: TournamentDto[]
     tournament: TournamentDto | null
     configureTournamentErrorMessage?: string
     addTournamentErrorMessage?: string
+    tournamentResults?: TournamentResultsDto
+    tournamentLeagueTable?: TournamentLeagueTableDto
 }
 
 const initialState: InitialState = {
@@ -75,6 +81,16 @@ export default function (state: InitialState = initialState, action: Action) {
             return {
                 ...state,
                 configureTournamentErrorMessage: action.payload,
+            }
+        case GET_TOURNAMENT_RESULTS:
+            return {
+                ...state,
+                tournamentResults: action.payload.tournamentResultsDto,
+            }
+        case GET_TOURNAMENT_LEAGUE_TABLE:
+            return {
+                ...state,
+                tournamentLeagueTable: action.payload.tournamentLeagueTableDto,
             }
         default:
             return state
