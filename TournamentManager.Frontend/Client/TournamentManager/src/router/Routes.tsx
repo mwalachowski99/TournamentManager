@@ -7,6 +7,7 @@ import TournamentList from '../components/tournaments/TournamentList'
 import NavigationLayout from '../components/layout/navigation/NavigationLayout'
 import TournamentDashboard from '../components/tournament/dashboard/TournamentDashboard'
 import TournamentResults from '../components/tournament/results/TournamentResults'
+import { MatchOverview } from '../components/match/MatchOverview'
 
 export const routes: RouteObject[] = [
     {
@@ -32,7 +33,10 @@ export const routes: RouteObject[] = [
                         path: 'tournament/:id/results',
                         element: <TournamentResults />,
                     },
-                    // dodaj kolejne ścieżki zalogowanych tu
+                    {
+                        path: 'match/:id',
+                        element: <MatchOverview />,
+                    },
                 ],
             },
         ],

@@ -2,6 +2,7 @@ import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
 import { MatchDto } from '../../../models/matchDto'
 import { memo } from 'react'
 import { formatDateTime } from '../../../helpers/DateHelpers'
+import { useNavigate } from 'react-router-dom'
 
 interface LeaguePhaseMatchesProps {
     matches: MatchDto[]
@@ -10,8 +11,9 @@ interface LeaguePhaseMatchesProps {
 export default memo(function LeaguePhaseMatches({
     matches,
 }: LeaguePhaseMatchesProps) {
+    const navigate = useNavigate()
     const handleMatchClick = (matchId: number | undefined) => {
-        if (matchId) console.log('Test', matchId) // Wypisanie w konsoli ID meczu (lub innej informacji)
+        if (matchId) navigate(`/match/${matchId}`)
     }
 
     return (

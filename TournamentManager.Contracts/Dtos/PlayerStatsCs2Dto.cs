@@ -1,0 +1,36 @@
+﻿namespace TournamentManager.Contracts.Dtos
+{
+    public record PlayerStatsCs2Dto(
+        PlayerDto Player,
+        int? Kills,
+        int? Deaths,
+        int? Assists,
+        int? Enemy5ks,
+        int? Enemy4ks,
+        int? Enemy3ks,
+        int? Enemy2ks,
+        int? UtilityCount,
+        int? UtilityDamage,
+        int? UtilitySuccesses,
+        int? UtilityEnemies,
+        int? FlashCount,
+        int? FlashSuccesses,
+        int? HealthPointsRemovedTotal,
+        int? HealthPointsDealtTotal,
+        int? ShotsFiredTotal,
+        int? ShotsOnTargetTotal,
+        int? V1Count,
+        int? V1Wins,
+        int? V2Count,
+        int? V2Wins,
+        int? EntryCount,
+        int? EntryWins,
+        int? EquipmentValue,
+        int? MoneySaved,
+        int? KillReward,
+        int? LiveTime,
+        int? HeadShotKills,
+        int? CashEarned,
+        int? EnemiesFlashed
+    );
+}

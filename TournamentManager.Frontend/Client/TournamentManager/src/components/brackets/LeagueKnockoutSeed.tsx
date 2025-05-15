@@ -1,6 +1,7 @@
 import type { IRenderSeedProps } from 'react-brackets'
 import { SingleLineSeed, Seed, SeedItem, SeedTeam } from 'react-brackets'
 import { Box } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 interface EliminationBracketSeedProps extends IRenderSeedProps {
     previewMode: boolean
@@ -17,9 +18,11 @@ export default function LeagueKnockoutSeed({
     const homeTeam = seed.teams[0]
     const awayTeam = seed.teams[1]
 
+    const navigate = useNavigate()
+
     const onMatchClick = () => {
         if (!previewMode) {
-            console.log(`Match ID: ${seed.id}`)
+            navigate(`/match/${seed.id}`)
         }
     }
 

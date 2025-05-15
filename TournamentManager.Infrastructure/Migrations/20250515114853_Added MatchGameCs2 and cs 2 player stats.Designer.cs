@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TournamentManager.Infrastructure;
@@ -11,9 +12,11 @@ using TournamentManager.Infrastructure;
 namespace TournamentManager.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250515114853_Added MatchGameCs2 and cs 2 player stats")]
+    partial class AddedMatchGameCs2andcs2playerstats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,7 +271,7 @@ namespace TournamentManager.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("TeamId")
+                    b.Property<int?>("TeamId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -365,7 +368,7 @@ namespace TournamentManager.Infrastructure.Migrations
 
                     b.HasIndex("MatchId");
 
-                    b.ToTable("MatchGamesCs2");
+                    b.ToTable("MatchGameCs2s");
                 });
 
             modelBuilder.Entity("TournamentManager.Domain.Entities.cs2.PlayerStatsCs2", b =>
@@ -478,7 +481,7 @@ namespace TournamentManager.Infrastructure.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("PlayersStatsCs2");
+                    b.ToTable("PlayerStatsCs2");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -565,9 +568,7 @@ namespace TournamentManager.Infrastructure.Migrations
                 {
                     b.HasOne("TournamentManager.Domain.Entities.Team", "Team")
                         .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TeamId");
 
                     b.Navigation("Team");
                 });

@@ -69,4 +69,5 @@ app.UseAuthorization();
 //app.MapControllers();
 
 app.AddTournamentsEndpoints();
+app.AddMatchGamesEndpoints();
 app.Run();
